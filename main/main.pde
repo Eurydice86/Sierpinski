@@ -1,37 +1,25 @@
-int clicks = 0;
+int shapeSidesN = 0;
+boolean shapeDone;
 
-PVector triangle_a, triangle_b, triangle_c;
+PVector triangle_a, triangle_b, triangle_c, triangle_d;
 PVector nextPoint;
 ArrayList<PVector> triangle = new ArrayList<PVector>();
 
 void setup(){
+  shapeDone = false;
   frameRate(60);
   fullScreen();
   //size(600,600);
   background(0);
-  
-  //triangle_a = new PVector(width/2, 5);
-  //triangle_b = new PVector(5, height-5);
-  //triangle_c = new PVector(width - 5, height-5);
-  
-  //triangle.add(triangle_a);
-  //triangle.add(triangle_b);
-  //triangle.add(triangle_c);
-  
-  
-  //circle(triangle.get(0).x, triangle.get(0).y,1);
-  //circle(triangle.get(1).x, triangle.get(1).y,1);
-  //circle(triangle.get(2).x, triangle.get(2).y,1);
-  
 }
 
 
 void draw(){
-  if(clicks>3){
-    for(int i=0; i<30; i++){
+  if(shapeDone){
+    for(int i=0; i<1000; i++){
       strokeWeight(0);
       stroke(255);
-      PVector randomPeak = pickRandomTrianglePeak();
+      PVector randomPeak = pickRandomPeak();
       nextPoint = new PVector((randomPeak.x + nextPoint.x)/2, (randomPeak.y + nextPoint.y)/2);
       circle(nextPoint.x, nextPoint.y,1);
     }
@@ -43,29 +31,22 @@ void draw(){
 }
 
 
-
-PVector pickRandomTrianglePeak(){
-  int r = int(random(3));
+PVector pickRandomPeak(){
+  int r = int(random(shapeSidesN));
+  println(r);
   return triangle.get(r);
 }
 
-void mouseClicked(){
-    if(clicks == 0){
+void mousePressed(){
+  if(!shapeDone){
+    if(mouseButton == LEFT){
       triangle_a = new PVector(mouseX, mouseY);
       triangle.add(triangle_a);
+      shapeSidesN++;
     }
-    if(clicks == 1){
-      triangle_b = new PVector(mouseX, mouseY);
-      triangle.add(triangle_b);
+    else{
+      nextPoint = new PVector(mouseX, mouseY);
+      shapeDone = true;
     }
-    if(clicks == 2){
-      triangle_a = new PVector(mouseX, mouseY);
-      triangle.add(triangle_a);
-    }
-    if(clicks == 3)
-    nextPoint = new PVector(mouseX, mouseY);
-    if(clicks > 3)
-    return;
-    
-    clicks ++;
+  }
 }
